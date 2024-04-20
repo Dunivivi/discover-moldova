@@ -15,3 +15,71 @@ input:not(.ng-input input) {
   margin-left: 1.5rem;
   margin-right: 2rem;
 }
+
+.categories-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+}
+
+.category {
+  min-width: 100px;
+  width: fit-content;
+  height: 40px;
+  border-radius: 15px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 5px 0 #0000001a;
+  margin-right: .5rem;
+}
+
+.category-icon {
+  padding: 6px;
+  background-color: #029acf1a;
+  border-radius: 25%;
+}
+
+.active-category {
+  background: #353a3f;
+  color: white;
+}
+
+.view-btn {
+  background: #ededed;
+  border-radius: 15px;
+}
+
+.item-container {
+  height: 200px;
+  width: 300px;
+  background: #fff;
+  border-radius: 15px;
+}
+
+.item {
+  padding: 10px;
+  height: 100%;
+  position: relative;
+}
+
+.img-container {
+  height: 120px;
+  width: 100%;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+}
+
+.text-box {
+  position: absolute;
+  bottom: 10px;
+  margin-left: 10px;
+}
