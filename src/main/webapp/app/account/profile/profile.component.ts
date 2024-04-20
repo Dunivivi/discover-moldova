@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { LoginService } from '../../login/login.service';
 import { Router } from '@angular/router';
+import { LANGUAGES } from 'app/config/language.constants';
+import { SessionStorageService } from 'ngx-webstorage';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-profile',
@@ -22,6 +25,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   ];
 
+
+  languages = LANGUAGES;
+  currentLanguage: string = LANGUAGES[1];
+
   account: Account | null = null;
 
   paused = false;
@@ -32,7 +39,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private accountService: AccountService, private loginService: LoginService, private router: Router) {
+  constructor(private accountService: AccountService,
+              private loginService: LoginService,
+              private router: Router,
+              private sessionStorageService: SessionStorageService,
+              private translateService: TranslateService) {
+    const localeSession = this.sessionStorageService.retrieve('locale');
+    localeSession !== undefined && localeSession !== null
+      ? this.currentLanguage = localeSession : this.currentLanguage = LANGUAGES[1];
   }
 
   ngOnInit(): void {
@@ -72,5 +86,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   logout(): void {
     this.loginService.logout();
     this.router.navigate(['']);
+  }
+
+  changeLanguage(languageKey: string): void {
+    this.sessionStorageService.store('locale', languageKey);
+    this.translateService.use(languageKey);
+    this.currentLanguage = languageKey;
   }
 }

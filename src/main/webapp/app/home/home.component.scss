@@ -1,1 +1,17 @@
+.home-container {
+  background-color: #f9f9f9;
+  padding-top: 100px;
+  height: 100vh;
+}
 
+.search-icon,
+input:not(.ng-input input) {
+  border-radius: 15px;
+}
+
+.input-group {
+  background: #fff;
+  box-shadow: 0 1px 5px 0 #0000001a;
+  margin-left: 1.5rem;
+  margin-right: 2rem;
+}

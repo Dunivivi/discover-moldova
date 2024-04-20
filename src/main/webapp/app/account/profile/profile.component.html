@@ -10,6 +10,38 @@
               </div>
               <h4 class="mb-2">{{ account.lastName }} {{ account.firstName }}</h4>
               <p class="text-muted mb-4">{{ account.email }}</p>
+
+              <div *ngIf="languages && languages.length > 1" class="nav-item dropdown pointer languages"
+                   display="dynamic"
+                   ngbDropdown>
+                <a #language class="nav-link dropdown-toggle" href="javascript:void(0);" id="languagesnavBarDropdown"
+                   ngbDropdownToggle>
+                <span class="current-language">
+                    <ng-container
+                      [ngTemplateOutletContext]="{language: currentLanguage}"
+                      [ngTemplateOutlet]="languages_img">
+                    </ng-container>
+                    <span>{{ currentLanguage | findLanguageFromKey }}</span>
+                </span>
+                </a>
+                <div aria-labelledby="languagesnavBarDropdown" class="dropdown-menu"
+                     ngbDropdownMenu container="body" placement="right">
+                  <li *ngFor="let language of languages">
+                    <a (click)="changeLanguage(language)"
+                       [jhiActiveMenu]="language"
+                       class="dropdown-item dropdown-lang"
+                       href="javascript:void(0);"
+                    >
+                      <ng-container
+                        [ngTemplateOutletContext]="{language: language}"
+                        [ngTemplateOutlet]="languages_img">
+                      </ng-container>
+                      <span class="language">{{ language | findLanguageFromKey }}</span>
+                    </a>
+                  </li>
+                </div>
+              </div>
+
               <hr class="mt-2 mb-3" />
 
               <div>
@@ -60,3 +92,9 @@
   </ng-container>
   <jhi-bottom-actions></jhi-bottom-actions>
 </div>
+
+<ng-template #languages_img let-language='language'>
+  <img *ngIf="language?.includes('ro')" alt="ro" class="icon-template" src="content/images/language/romania.png">
+  <img *ngIf="language?.includes('en')" alt="en" class="icon-template" src="content/images/language/english.png">
+  <img *ngIf="language?.includes('ru')" alt="ru" class="icon-template" src="content/images/language/russia.png">
+</ng-template>

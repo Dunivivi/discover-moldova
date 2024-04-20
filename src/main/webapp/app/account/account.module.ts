@@ -12,9 +12,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { accountState } from './account.route';
 import { ProfileComponent } from './profile/profile.component';
 import { BottomActionsComponent } from '../shared/bottom-actions/bottom-actions.component';
+import { ActiveMenuDirective } from '../layouts/navbar/active-menu.directive';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(accountState), BottomActionsComponent],
+  imports: [SharedModule, RouterModule.forChild(accountState), BottomActionsComponent, ActiveMenuDirective],
   declarations: [
     ActivateComponent,
     RegisterComponent,
@@ -24,6 +25,7 @@ import { BottomActionsComponent } from '../shared/bottom-actions/bottom-actions.
     PasswordResetFinishComponent,
     SettingsComponent,
     ProfileComponent
-  ],
+  ]
 })
-export class AccountModule {}
+export class AccountModule {
+}

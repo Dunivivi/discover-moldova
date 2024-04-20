@@ -98,7 +98,11 @@
       "open": "Открыть",
       "save": "Сохранить",
       "view": "Просмотр",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "explore": "Исследовать",
+      "favorites": "Избранное",
+      "events": "События",
+      "profile": "Профиль"
     },
     "detail": {
       "field": "Поле",

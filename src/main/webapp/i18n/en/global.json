@@ -98,7 +98,11 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "explore": "Explore",
+      "favorites": "Favorites",
+      "events": "Events",
+      "profile": "Profile"
     },
     "detail": {
       "field": "Field",
