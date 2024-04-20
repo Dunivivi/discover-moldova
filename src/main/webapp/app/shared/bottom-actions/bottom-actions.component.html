@@ -1,0 +1,28 @@
+<div class="bottom-actions">
+  <div class="d-flex justify-content-evenly">
+    <button [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="'text-primary'" [routerLink]="'/'"
+            class="btn" type="button">
+      <fa-icon icon="magnifying-glass"></fa-icon>
+      <br />
+      <span>Explore</span>
+    </button>
+    <button [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="'text-primary'" [routerLink]="'/favorites'"
+            class="btn" type="button">
+      <fa-icon icon="heart"></fa-icon>
+      <br />
+      <span>Favorites</span>
+    </button>
+    <button [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="'text-primary'" [routerLink]="'/events'"
+            class="btn" type="button">
+      <fa-icon icon="bell"></fa-icon>
+      <br />
+      <span>Events</span>
+    </button>
+    <button [routerLinkActiveOptions]="{exact: true}" [routerLinkActive]="'text-primary'" [routerLink]="'/account/my'"
+            class="btn" type="button">
+      <fa-icon icon="circle-user"></fa-icon>
+      <br />
+      <span>Profile</span>
+    </button>
+  </div>
+</div>

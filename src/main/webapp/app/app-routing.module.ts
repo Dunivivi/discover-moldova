@@ -15,29 +15,32 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN],
+            authorities: [Authority.ADMIN]
           },
           canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
+          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule)
         },
         {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+          canActivate: [UserRouteAccessService]
         },
         {
           path: 'login',
-          loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
+          loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
         },
         {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
+          canActivate: [UserRouteAccessService]
         },
         navbarRoute,
-        ...errorRoute,
+        ...errorRoute
       ],
       { enableTracing: DEBUG_INFO_ENABLED }
-    ),
+    )
   ],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
