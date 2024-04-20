@@ -2,8 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
-      <span jhiTranslate="global.title" class="navbar-title">Travel</span>
-      <span class="navbar-version">{{ version }}</span>
+      <span jhiTranslate="global.title" class="navbar-title">Travel MD</span>
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -91,20 +90,14 @@
                 <span jhiTranslate="global.menu.admin.logs">Logs</span>
               </a>
             </li>
-            <li *ngIf="openAPIEnabled">
-              <a class="dropdown-item" routerLink="admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
-                <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.apidocs">API</span>
-              </a>
-            </li>
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
-            <span>
-              <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Language</span>
+             <span>
+              <fa-icon icon="globe" [fixedWidth]="true"></fa-icon>
+              <span>{{ locale | findLanguageFromKey }}</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">

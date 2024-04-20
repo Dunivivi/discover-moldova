@@ -6,6 +6,11 @@
 Bootstrap tweaks
 ===============================================================*/
 
+html, body {
+  height: 100%;
+  min-height: 100%;
+}
+
 body,
 h1,
 h2,
@@ -14,9 +19,22 @@ h4 {
   font-weight: 300;
 }
 
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #fafafa;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
 a {
-  color: #533f03;
+  color: #212529;
   font-weight: bold;
 }
 

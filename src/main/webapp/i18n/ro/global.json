@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Travel",
+    "title": "Travel MD",
     "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
     "menu": {
       "home": "Acasă",
@@ -42,7 +42,7 @@
       "language": "Limbă"
     },
     "form": {
-      "username.label": "Utilizator",
+      "username.label": "Login",
       "username.placeholder": "Numele de utilizator",
       "currentpassword.label": "Current password",
       "currentpassword.placeholder": "Current password",
