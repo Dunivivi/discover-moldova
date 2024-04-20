@@ -20,7 +20,6 @@ import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import { MainComponent } from './layouts/main/main.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { ErrorComponent } from './layouts/error/error.component';
 
@@ -43,7 +42,7 @@ import { ErrorComponent } from './layouts/error/error.component';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, FooterComponent],
+  declarations: [MainComponent, ErrorComponent, FooterComponent],
   bootstrap: [MainComponent]
 })
 export class AppModule {
