@@ -1,5 +1,6 @@
 package com.travel.moldova.service.criteria;
 
+import com.travel.moldova.domain.enumeration.Type;
 import org.springdoc.api.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
@@ -34,7 +35,7 @@ public class EventsCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
-    private StringFilter type;
+    private TypeFilter type;
 
     private StringFilter subType;
 
@@ -170,18 +171,11 @@ public class EventsCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
-    public StringFilter getType() {
+    public TypeFilter getType() {
         return type;
     }
 
-    public StringFilter type() {
-        if (type == null) {
-            type = new StringFilter();
-        }
-        return type;
-    }
-
-    public void setType(StringFilter type) {
+    public void setType(TypeFilter type) {
         this.type = type;
     }
 
@@ -385,5 +379,20 @@ public class EventsCriteria implements Serializable, Criteria {
             (companyId != null ? "companyId=" + companyId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
+    }
+
+    public static class TypeFilter extends Filter<Type> {
+
+        public TypeFilter() {
+        }
+
+        public TypeFilter(TypeFilter type) {
+            super(type);
+        }
+
+        @Override
+        public TypeFilter copy() {
+            return new TypeFilter(this);
+        }
     }
 }

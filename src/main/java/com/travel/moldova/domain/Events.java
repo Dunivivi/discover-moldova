@@ -1,6 +1,7 @@
 package com.travel.moldova.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.travel.moldova.domain.enumeration.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -43,8 +44,9 @@ public class Events implements Serializable {
     private String description;
 
     @Size(max = 50)
-    @Column(name = "type", length = 50)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 50, nullable = true) // Add nullable attribute
+    private Type type;
 
     @Size(max = 50)
     @Column(name = "sub_type", length = 50)
@@ -84,17 +86,21 @@ public class Events implements Serializable {
         return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Events id(Long id) {
         this.setId(id);
         return this;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Events title(String title) {
@@ -102,12 +108,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Integer getNoOfTours() {
         return this.noOfTours;
+    }
+
+    public void setNoOfTours(Integer noOfTours) {
+        this.noOfTours = noOfTours;
     }
 
     public Events noOfTours(Integer noOfTours) {
@@ -115,12 +121,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setNoOfTours(Integer noOfTours) {
-        this.noOfTours = noOfTours;
-    }
-
     public Double getRating() {
         return this.rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public Events rating(Double rating) {
@@ -128,12 +134,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
     public String getPreViewImg() {
         return this.preViewImg;
+    }
+
+    public void setPreViewImg(String preViewImg) {
+        this.preViewImg = preViewImg;
     }
 
     public Events preViewImg(String preViewImg) {
@@ -141,12 +147,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setPreViewImg(String preViewImg) {
-        this.preViewImg = preViewImg;
-    }
-
     public String getDescription() {
         return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Events description(String description) {
@@ -154,25 +160,25 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Type getType() {
+        return type;
     }
 
-    public String getType() {
-        return this.type;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public Events type(String type) {
+    public Events type(Type type) {
         this.setType(type);
         return this;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getSubType() {
         return this.subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
     }
 
     public Events subType(String subType) {
@@ -180,12 +186,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setSubType(String subType) {
-        this.subType = subType;
-    }
-
     public Double getPrice() {
         return this.price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Events price(Double price) {
@@ -193,12 +199,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public Instant getEventDate() {
         return this.eventDate;
+    }
+
+    public void setEventDate(Instant eventDate) {
+        this.eventDate = eventDate;
     }
 
     public Events eventDate(Instant eventDate) {
@@ -206,12 +212,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setEventDate(Instant eventDate) {
-        this.eventDate = eventDate;
-    }
-
     public String getCreatedBy() {
         return this.createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Events createdBy(String createdBy) {
@@ -219,12 +225,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public Instant getCreatedDate() {
         return this.createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Events createdDate(Instant createdDate) {
@@ -232,12 +238,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public String getLastModifiedBy() {
         return this.lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     public Events lastModifiedBy(String lastModifiedBy) {
@@ -245,12 +251,12 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
     public Instant getLastModifiedDate() {
         return this.lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Events lastModifiedDate(Instant lastModifiedDate) {
@@ -258,21 +264,17 @@ public class Events implements Serializable {
         return this;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
     public Long getCompanyId() {
         return this.companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public Events companyId(Long companyId) {
         this.setCompanyId(companyId);
         return this;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 
     public Set<Assets> getAssets() {

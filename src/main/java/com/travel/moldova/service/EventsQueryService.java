@@ -1,6 +1,8 @@
 package com.travel.moldova.service;
 
 import com.travel.moldova.domain.Events;
+import com.travel.moldova.domain.Events_;
+import com.travel.moldova.domain.enumeration.Type;
 import com.travel.moldova.repository.EventsRepository;
 import com.travel.moldova.service.criteria.EventsCriteria;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Service for executing complex queries for {@link Events} entities in the database.
@@ -34,6 +37,7 @@ public class EventsQueryService extends QueryService<Events> {
 
     /**
      * Return a {@link List} of {@link Events} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -46,8 +50,9 @@ public class EventsQueryService extends QueryService<Events> {
 
     /**
      * Return a {@link Page} of {@link Events} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -64,6 +69,7 @@ public class EventsQueryService extends QueryService<Events> {
 
     /**
      * Return the number of matching entities in the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -76,6 +82,7 @@ public class EventsQueryService extends QueryService<Events> {
 
     /**
      * Function to convert {@link EventsCriteria} to a {@link Specification}
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -104,9 +111,9 @@ public class EventsQueryService extends QueryService<Events> {
 //            if (criteria.getDescription() != null) {
 //                specification = specification.and(buildStringSpecification(criteria.getDescription(), Events_.description));
 //            }
-//            if (criteria.getType() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getType(), Events_.type));
-//            }
+            if (criteria.getType() != null && !Objects.equals(criteria.getType(), new EventsCriteria.TypeFilter().setEquals(Type.Toate))) {
+                specification = specification.and(buildSpecification(criteria.getType(), Events_.type));
+            }
 //            if (criteria.getSubType() != null) {
 //                specification = specification.and(buildStringSpecification(criteria.getSubType(), Events_.subType));
 //            }
