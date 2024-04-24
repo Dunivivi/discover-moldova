@@ -43,7 +43,6 @@ public class Events implements Serializable {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @Size(max = 50)
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 50, nullable = true) // Add nullable attribute
     private Type type;
@@ -80,7 +79,7 @@ public class Events implements Serializable {
     @JsonIgnoreProperties(value = {"events"})
     private Set<Assets> assets = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "favorites", joinColumns = {@JoinColumn(name = "event_id")}, inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> users = new HashSet<>();
 

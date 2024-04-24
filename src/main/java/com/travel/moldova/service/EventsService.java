@@ -100,7 +100,7 @@ public class EventsService {
         return events;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public void setFavorite(Long id) {
         Events event = eventsRepository.findById(id).orElseThrow();
 
@@ -111,7 +111,7 @@ public class EventsService {
         eventsRepository.save(event);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     public void removeFavorite(Long id) {
         Events event = eventsRepository.findById(id).orElseThrow();
 
