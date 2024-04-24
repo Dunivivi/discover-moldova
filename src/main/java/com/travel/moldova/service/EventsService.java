@@ -1,7 +1,11 @@
 package com.travel.moldova.service;
 
 import com.travel.moldova.domain.Events;
+import com.travel.moldova.domain.User;
+import com.travel.moldova.domain.enumeration.Type;
 import com.travel.moldova.repository.EventsRepository;
+import com.travel.moldova.repository.UserRepository;
+import com.travel.moldova.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Implementation for managing {@link Events}.
@@ -22,8 +27,12 @@ public class EventsService {
 
     private final EventsRepository eventsRepository;
 
-    public EventsService(EventsRepository eventsRepository) {
+    private final UserRepository userRepository;
+
+
+    public EventsService(EventsRepository eventsRepository, UserRepository userRepository) {
         this.eventsRepository = eventsRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -49,66 +58,6 @@ public class EventsService {
     }
 
     /**
-     * Partially update a events.
-     *
-     * @param events the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<Events> partialUpdate(Events events) {
-        log.debug("Request to partially update Events : {}", events);
-
-        return eventsRepository
-            .findById(events.getId())
-            .map(existingEvents -> {
-                if (events.getTitle() != null) {
-                    existingEvents.setTitle(events.getTitle());
-                }
-                if (events.getNoOfTours() != null) {
-                    existingEvents.setNoOfTours(events.getNoOfTours());
-                }
-                if (events.getRating() != null) {
-                    existingEvents.setRating(events.getRating());
-                }
-                if (events.getPreViewImg() != null) {
-                    existingEvents.setPreViewImg(events.getPreViewImg());
-                }
-                if (events.getDescription() != null) {
-                    existingEvents.setDescription(events.getDescription());
-                }
-                if (events.getType() != null) {
-                    existingEvents.setType(events.getType());
-                }
-                if (events.getSubType() != null) {
-                    existingEvents.setSubType(events.getSubType());
-                }
-                if (events.getPrice() != null) {
-                    existingEvents.setPrice(events.getPrice());
-                }
-                if (events.getEventDate() != null) {
-                    existingEvents.setEventDate(events.getEventDate());
-                }
-                if (events.getCreatedBy() != null) {
-                    existingEvents.setCreatedBy(events.getCreatedBy());
-                }
-                if (events.getCreatedDate() != null) {
-                    existingEvents.setCreatedDate(events.getCreatedDate());
-                }
-                if (events.getLastModifiedBy() != null) {
-                    existingEvents.setLastModifiedBy(events.getLastModifiedBy());
-                }
-                if (events.getLastModifiedDate() != null) {
-                    existingEvents.setLastModifiedDate(events.getLastModifiedDate());
-                }
-                if (events.getCompanyId() != null) {
-                    existingEvents.setCompanyId(events.getCompanyId());
-                }
-
-                return existingEvents;
-            })
-            .map(eventsRepository::save);
-    }
-
-    /**
      * Get all the events.
      *
      * @param pageable the pagination information.
@@ -131,6 +80,48 @@ public class EventsService {
         log.debug("Request to get Events : {}", id);
         return eventsRepository.findById(id);
     }
+
+    @Transactional(readOnly = true)
+    public Page<Events> findAllByUser(Pageable pageable, Type type) {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+
+        Page<Events> events;
+
+        if (type.equals(Type.Toate)) {
+            events = eventsRepository.findAllByUsersIn(Set.of(user), pageable);
+        } else {
+            events = eventsRepository.findAllByUsersInAndType(Set.of(user), type, pageable);
+        }
+
+        events.forEach(event -> {
+            event.setFavorite(user);
+        });
+        return events;
+    }
+
+    @Transactional(readOnly = true)
+    public void setFavorite(Long id) {
+        Events event = eventsRepository.findById(id).orElseThrow();
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+
+        event.getUsers().add(user);
+        eventsRepository.save(event);
+    }
+
+    @Transactional(readOnly = true)
+    public void removeFavorite(Long id) {
+        Events event = eventsRepository.findById(id).orElseThrow();
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+
+        event.getUsers().remove(user);
+        eventsRepository.save(event);
+    }
+
 
     /**
      * Delete the events by id.

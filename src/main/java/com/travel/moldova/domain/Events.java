@@ -80,6 +80,13 @@ public class Events implements Serializable {
     @JsonIgnoreProperties(value = {"events"})
     private Set<Assets> assets = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "favorites", joinColumns = {@JoinColumn(name = "event_id")}, inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<User> users = new HashSet<>();
+
+    @Transient
+    private Boolean isFavorite;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -283,6 +290,22 @@ public class Events implements Serializable {
 
     public void setAssets(Set<Assets> assets) {
         this.assets = assets;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(User user) {
+        isFavorite = users.contains(user);
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

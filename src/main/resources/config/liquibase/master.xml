@@ -14,4 +14,5 @@
     <include file="config/liquibase/changelog/20240422184800_added_entity_Event.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240422180034_added_entity_Assets.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240422180034_added_entity_constraints_Assets.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240423174800_added_entity_Favorites.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

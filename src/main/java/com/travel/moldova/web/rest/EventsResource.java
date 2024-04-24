@@ -1,6 +1,7 @@
 package com.travel.moldova.web.rest;
 
 import com.travel.moldova.domain.Events;
+import com.travel.moldova.domain.enumeration.Type;
 import com.travel.moldova.repository.EventsRepository;
 import com.travel.moldova.service.EventsQueryService;
 import com.travel.moldova.service.EventsService;
@@ -20,7 +21,6 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -34,18 +34,13 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class EventsResource {
 
-    private final Logger log = LoggerFactory.getLogger(EventsResource.class);
-
     private static final String ENTITY_NAME = "events";
-
+    private final Logger log = LoggerFactory.getLogger(EventsResource.class);
+    private final EventsService eventsService;
+    private final EventsRepository eventsRepository;
+    private final EventsQueryService eventsQueryService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final EventsService eventsService;
-
-    private final EventsRepository eventsRepository;
-
-    private final EventsQueryService eventsQueryService;
 
     public EventsResource(EventsService eventsService, EventsRepository eventsRepository, EventsQueryService eventsQueryService) {
         this.eventsService = eventsService;
@@ -76,7 +71,7 @@ public class EventsResource {
     /**
      * {@code PUT  /events/:id} : Updates an existing events.
      *
-     * @param id the id of the events to save.
+     * @param id     the id of the events to save.
      * @param events the events to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated events,
      * or with status {@code 400 (Bad Request)} if the events is not valid,
@@ -121,6 +116,17 @@ public class EventsResource {
     ) {
         log.debug("REST request to get Events by criteria: {}", criteria);
         Page<Events> page = eventsQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/events/favorites/{type}")
+    public ResponseEntity<List<Events>> getAllFavoritesEvents(
+        @PathVariable(value = "type", required = true) final Type type,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Events by type: {}", type);
+        Page<Events> page = eventsService.findAllByUser(pageable, type);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -170,6 +176,26 @@ public class EventsResource {
     public ResponseEntity<Void> deleteEvents(@PathVariable Long id) {
         log.debug("REST request to delete Events : {}", id);
         eventsService.delete(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @PostMapping("/events/favorites/{id}")
+    public ResponseEntity<Void> addFavoriteEvent(@PathVariable Long id) {
+        log.debug("REST request to add favorite Event : {}", id);
+        eventsService.setFavorite(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @DeleteMapping("/events/favorites/{id}")
+    public ResponseEntity<Void> deleteFavoriteEvent(@PathVariable Long id) {
+        log.debug("REST request to delete favorite Event : {}", id);
+        eventsService.removeFavorite(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

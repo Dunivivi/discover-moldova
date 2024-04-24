@@ -1,5 +1,6 @@
 package com.travel.moldova.service.criteria;
 
+import com.travel.moldova.domain.User;
 import com.travel.moldova.domain.enumeration.Type;
 import org.springdoc.api.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
@@ -7,6 +8,7 @@ import tech.jhipster.service.filter.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Criteria class for the {@link com.travel.moldova.domain.Events} entity. This class is used

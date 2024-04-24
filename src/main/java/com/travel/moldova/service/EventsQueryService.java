@@ -2,8 +2,11 @@ package com.travel.moldova.service;
 
 import com.travel.moldova.domain.Events;
 import com.travel.moldova.domain.Events_;
+import com.travel.moldova.domain.User;
 import com.travel.moldova.domain.enumeration.Type;
 import com.travel.moldova.repository.EventsRepository;
+import com.travel.moldova.repository.UserRepository;
+import com.travel.moldova.security.SecurityUtils;
 import com.travel.moldova.service.criteria.EventsCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,9 @@ import tech.jhipster.service.QueryService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
+import static com.travel.moldova.domain.User_.login;
 
 /**
  * Service for executing complex queries for {@link Events} entities in the database.
@@ -30,9 +36,11 @@ public class EventsQueryService extends QueryService<Events> {
     private final Logger log = LoggerFactory.getLogger(EventsQueryService.class);
 
     private final EventsRepository eventsRepository;
+    private final UserRepository userRepository;
 
-    public EventsQueryService(EventsRepository eventsRepository) {
+    public EventsQueryService(EventsRepository eventsRepository, UserRepository userRepository) {
         this.eventsRepository = eventsRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -59,12 +67,26 @@ public class EventsQueryService extends QueryService<Events> {
     public Page<Events> findByCriteria(EventsCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Events> specification = createSpecification(criteria);
-        return eventsRepository.findAll(specification, page);
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+//        String login = "admin";
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+        Page<Events> events = eventsRepository.findAll(specification, page);
+        events.forEach(event -> {
+            event.setFavorite(user);
+        });
+        return events;
     }
 
     @Transactional(readOnly = true)
     public List<Events> findRecommended() {
-        return eventsRepository.findRandom10();
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+//        String login = "admin";
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+        List<Events> events = eventsRepository.findRandom10();
+        events.forEach(event -> {
+            event.setFavorite(user);
+        });
+        return events;
     }
 
     /**
