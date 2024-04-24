@@ -20,5 +20,6 @@ public enum Type {
     Agenţii,
     Info,
     Campinguri,
-    Benzinării
+    Benzinării,
+    Evenimente
 }

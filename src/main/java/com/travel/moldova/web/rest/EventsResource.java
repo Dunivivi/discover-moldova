@@ -131,6 +131,19 @@ public class EventsResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/events/activities")
+    public ResponseEntity<List<Events>> getActivitiesEvents(
+        EventsCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get activities by pageable: {}", pageable);
+        criteria.setType((EventsCriteria.TypeFilter) new EventsCriteria.TypeFilter().setEquals(Type.Evenimente));
+        Page<Events> page = eventsQueryService.findByCriteria(criteria, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
     @GetMapping("/events/suggested")
     public ResponseEntity<List<Events>> getSuggestedEvents(
         EventsCriteria criteria,

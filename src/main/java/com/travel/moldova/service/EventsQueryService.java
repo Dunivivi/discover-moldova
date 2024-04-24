@@ -67,6 +67,7 @@ public class EventsQueryService extends QueryService<Events> {
     public Page<Events> findByCriteria(EventsCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<Events> specification = createSpecification(criteria);
+
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
 //        String login = "admin";
         User user = userRepository.findOneByLogin(login).orElseThrow();
