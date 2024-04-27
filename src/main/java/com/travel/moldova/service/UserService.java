@@ -1,12 +1,16 @@
 package com.travel.moldova.service;
 
 import com.travel.moldova.domain.Authority;
+import com.travel.moldova.domain.Company;
 import com.travel.moldova.domain.User;
 import com.travel.moldova.repository.AuthorityRepository;
+import com.travel.moldova.repository.CompanyRepository;
 import com.travel.moldova.repository.UserRepository;
 import com.travel.moldova.security.AuthoritiesConstants;
 import com.travel.moldova.security.SecurityUtils;
 import com.travel.moldova.service.dto.AdminUserDTO;
+import com.travel.moldova.service.dto.CreateUserCompanyDTO;
+import com.travel.moldova.service.dto.CreateUserDTO;
 import com.travel.moldova.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +42,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final CompanyRepository companyRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CompanyRepository companyRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.companyRepository = companyRepository;
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
@@ -173,6 +180,52 @@ public class UserService {
                 }
                 log.debug("Changed Information for User: {}", user);
             });
+    }
+
+
+    public User registerSimpleUser(CreateUserDTO userDTO) {
+        User newUser = new User();
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+        newUser.setLogin(userDTO.getEmail().toLowerCase());
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        if (userDTO.getEmail() != null) {
+            newUser.setEmail(userDTO.getEmail().toLowerCase());
+        }
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        log.debug("Created new for User: {}", newUser);
+        return newUser;
+    }
+
+    public User registerCompanyUser(CreateUserCompanyDTO userDTO) {
+        User newUser = new User();
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+        newUser.setLogin(userDTO.getEmail().toLowerCase());
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        if (userDTO.getEmail() != null) {
+            newUser.setEmail(userDTO.getEmail().toLowerCase());
+        }
+        Set<Authority> authorities = new HashSet<>();
+        authorityRepository.findById(AuthoritiesConstants.COMPANY).ifPresent(authorities::add);
+        newUser.setAuthorities(authorities);
+
+        Company company = new Company();
+        company.setName(userDTO.getCompanyName());
+        Company newCompany = companyRepository.save(company);
+
+        newUser.setCompany(newCompany);
+
+        userRepository.save(newUser);
+        log.debug("Created new for User: {}", newUser);
+        return newUser;
     }
 
     @Transactional

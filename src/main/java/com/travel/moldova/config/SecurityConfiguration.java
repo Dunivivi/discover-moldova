@@ -83,6 +83,8 @@ public class SecurityConfiguration {
             .antMatchers("/api/events/**").permitAll()
 //            .antMatchers("/api/assets/**").permitAll()
             .antMatchers("/api/register").permitAll()
+            .antMatchers("/api/register/user").permitAll()
+            .antMatchers("/api/register/user-company").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()

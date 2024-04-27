@@ -1,12 +1,16 @@
 package com.travel.moldova.web.rest;
 
 import com.travel.moldova.domain.User;
+import com.travel.moldova.repository.CompanyRepository;
 import com.travel.moldova.repository.UserRepository;
 import com.travel.moldova.security.SecurityUtils;
 import com.travel.moldova.service.MailService;
 import com.travel.moldova.service.UserService;
 import com.travel.moldova.service.dto.AdminUserDTO;
+import com.travel.moldova.service.dto.CreateUserCompanyDTO;
+import com.travel.moldova.service.dto.CreateUserDTO;
 import com.travel.moldova.service.dto.PasswordChangeDTO;
+import com.travel.moldova.web.rest.errors.CompanyAlreadyUsedException;
 import com.travel.moldova.web.rest.errors.EmailAlreadyUsedException;
 import com.travel.moldova.web.rest.errors.InvalidPasswordException;
 import com.travel.moldova.web.rest.errors.LoginAlreadyUsedException;
@@ -30,11 +34,13 @@ public class AccountResource {
 
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
     private final UserService userService;
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, CompanyRepository companyRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
         this.userService = userService;
         this.mailService = mailService;
     }
@@ -63,6 +69,29 @@ public class AccountResource {
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
+    }
+
+    @PostMapping("/register/user")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerUserAccount(@Valid @RequestBody CreateUserDTO userDTO) {
+        if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
+            throw new EmailAlreadyUsedException();
+        }
+        userService.registerSimpleUser(userDTO);
+    }
+
+    @PostMapping("/register/user-company")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerUserCompanyAccount(@Valid @RequestBody CreateUserCompanyDTO companyDTO) {
+        if (userRepository.findOneByEmailIgnoreCase(companyDTO.getEmail()).isPresent()) {
+            throw new EmailAlreadyUsedException();
+        }
+
+        if(companyRepository.findOneByName(companyDTO.getCompanyName()).isPresent()) {
+            throw new CompanyAlreadyUsedException();
+        }
+
+        userService.registerCompanyUser(companyDTO);
     }
 
 
