@@ -5,7 +5,6 @@ import com.travel.moldova.domain.User;
 import com.travel.moldova.domain.enumeration.Type;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -33,5 +32,6 @@ public interface EventsRepository extends JpaRepository<Events, Long>, JpaSpecif
     Optional<Events> findById(Long aLong);
 
     Page<Events> findAllByUsersInAndType(Set<User> users, Type type, Pageable pageable);
-    Page<Events> findAllByUsersIn(Set<User> users,  Pageable pageable);
+
+    Page<Events> findAllByUsersIn(Set<User> users, Pageable pageable);
 }

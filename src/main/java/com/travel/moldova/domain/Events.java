@@ -72,10 +72,25 @@ public class Events implements Serializable {
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
 
+    @Column(name = "lat")
+    private String lat;
+
+    @Column(name = "long")
+    private String longitudine;
+
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "company_id")
     private Long companyId;
 
-    @OneToMany(mappedBy = "events")
+    @OneToMany(mappedBy = "events", fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"events"})
     private Set<Assets> assets = new HashSet<>();
 
@@ -308,6 +323,47 @@ public class Events implements Serializable {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLongitudine() {
+        return longitudine;
+    }
+
+    public void setLongitudine(String longitudine) {
+        this.longitudine = longitudine;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     @Override
     public boolean equals(Object o) {
