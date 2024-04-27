@@ -2,9 +2,7 @@
 version: '3.8'
 services:
   app:
-    image: 'docker-spring-boot-postgres:latest'
-    build:
-      context: .
+    image: 'dunivivi/travel:latest'
     container_name: app
     depends_on:
       - db
@@ -15,7 +13,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/travel
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://db:5432/travel
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres„
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - JHIPSTER_SLEEP=2 # gives time for other services to boot before the application
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -27,10 +25,11 @@ services:
     # volumes:
     #   - ~/volumes/jhipster/travel/postgresql/:/var/lib/postgresql/data/
     environment:
+      - POSTGRES_DB=travel
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:5432:5432
+      - 127.0.0.1:5433:5432
