@@ -3,11 +3,17 @@ package com.travel.moldova.service.dto;
 import com.travel.moldova.config.Constants;
 import com.travel.moldova.domain.Authority;
 import com.travel.moldova.domain.User;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
+
+import static java.util.Objects.nonNull;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -43,6 +49,8 @@ public class AdminUserDTO implements Serializable {
 
     private Set<String> authorities;
 
+    private String company;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -58,6 +66,7 @@ public class AdminUserDTO implements Serializable {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.company = nonNull(user.getCompany()) ? user.getCompany().getName() : null;
     }
 
     public Long getId() {
@@ -139,6 +148,15 @@ public class AdminUserDTO implements Serializable {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     // prettier-ignore
