@@ -19,10 +19,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -72,17 +75,16 @@ public class AccountResource {
     }
 
     @PostMapping("/register/user")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void registerUserAccount(@Valid @RequestBody CreateUserDTO userDTO) {
+    public ResponseEntity<HttpStatus> registerUserAccount(@Valid @RequestBody CreateUserDTO userDTO) throws URISyntaxException {
         if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
         }
-        userService.registerSimpleUser(userDTO);
+        var user = userService.registerSimpleUser(userDTO);
+        return ResponseEntity.created(new URI("" + user.getId())).body(HttpStatus.CREATED);
     }
 
     @PostMapping("/register/user-company")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void registerUserCompanyAccount(@Valid @RequestBody CreateUserCompanyDTO companyDTO) {
+    public ResponseEntity<HttpStatus> registerUserCompanyAccount(@Valid @RequestBody CreateUserCompanyDTO companyDTO) throws URISyntaxException {
         if (userRepository.findOneByEmailIgnoreCase(companyDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
         }
@@ -91,7 +93,8 @@ public class AccountResource {
             throw new CompanyAlreadyUsedException();
         }
 
-        userService.registerCompanyUser(companyDTO);
+        var user = userService.registerCompanyUser(companyDTO);
+        return ResponseEntity.created(new URI("" + user.getId())).body(HttpStatus.CREATED);
     }
 
 
