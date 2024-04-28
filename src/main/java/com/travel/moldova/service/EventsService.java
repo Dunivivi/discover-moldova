@@ -149,7 +149,6 @@ public class EventsService {
         event.setLongitudine(nonNull(eventDTO.getLongitudine()) ? eventDTO.getLongitudine() : null);
         event.setUrl(nonNull(eventDTO.getUrl()) ? eventDTO.getUrl() : null);
         event.setLocation(nonNull(eventDTO.getLocation()) ? eventDTO.getLocation() : null);
-        event.setAssets(nonNull(eventDTO.getAssets()) ? eventDTO.getAssets() : null);
         event.setCompanyId(nonNull(user.getCompany().getId()) ? user.getCompany().getId() : null);
         event.setCreatedBy(user.getFirstName() + " " + user.getLastName());
         event.setCreatedDate(Instant.now());
@@ -157,9 +156,9 @@ public class EventsService {
         Events events = eventsRepository.save(event);
 
         if (!eventDTO.getAssets().isEmpty()) {
-            for (Assets asset : eventDTO.getAssets()) {
+            for (String asset : eventDTO.getAssets()) {
                 Assets assets = new Assets();
-                assets.setUrl(asset.getUrl());
+                assets.setUrl(asset);
                 assets.setEvents(events);
 
                 assetsRepository.save(assets);

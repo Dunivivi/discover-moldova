@@ -34,26 +34,10 @@ public class CreateEventDTO {
 
     private String location;
 
-    private Set<Assets> assets;
+    private Set<String> assets;
 
 
     public CreateEventDTO() {
-    }
-
-    public CreateEventDTO(String title, Double rating, Integer noOfTours, String preViewImg, String description, Type type, String subType, Instant eventDate, String lat, String longitudine, String url, String location, Set<Assets> assets) {
-        this.title = title;
-        this.rating = rating;
-        this.noOfTours = noOfTours;
-        this.preViewImg = preViewImg;
-        this.description = description;
-        this.type = type;
-        this.subType = subType;
-        this.eventDate = eventDate;
-        this.lat = lat;
-        this.longitudine = longitudine;
-        this.url = url;
-        this.location = location;
-        this.assets = assets;
     }
 
     public String getTitle() {
@@ -152,11 +136,11 @@ public class CreateEventDTO {
         this.location = location;
     }
 
-    public Set<Assets> getAssets() {
+    public Set<String> getAssets() {
         return assets;
     }
 
-    public void setAssets(Set<Assets> assets) {
+    public void setAssets(Set<String> assets) {
         this.assets = assets;
     }
 
