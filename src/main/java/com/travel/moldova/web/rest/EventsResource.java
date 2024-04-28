@@ -6,6 +6,7 @@ import com.travel.moldova.repository.EventsRepository;
 import com.travel.moldova.service.EventsQueryService;
 import com.travel.moldova.service.EventsService;
 import com.travel.moldova.service.criteria.EventsCriteria;
+import com.travel.moldova.service.dto.CreateEventDTO;
 import com.travel.moldova.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -51,21 +53,18 @@ public class EventsResource {
     /**
      * {@code POST  /events} : Create a new events.
      *
-     * @param events the events to create.
+     * @param eventDTO the events to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new events, or with status {@code 400 (Bad Request)} if the events has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/events")
-    public ResponseEntity<Events> createEvents(@Valid @RequestBody Events events) throws URISyntaxException {
-        log.debug("REST request to save Events : {}", events);
-        if (events.getId() != null) {
-            throw new BadRequestAlertException("A new events cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Events result = eventsService.save(events);
+    public ResponseEntity<HttpStatus> createEvents(@Valid @RequestBody CreateEventDTO eventDTO) throws URISyntaxException {
+        log.debug("REST request to save Events : {}", eventDTO);
+        eventsService.createEvent(eventDTO);
         return ResponseEntity
-            .created(new URI("/api/events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .created(new URI("/api/events/" + eventDTO.getTitle()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, eventDTO.getTitle()))
+            .body(HttpStatus.CREATED);
     }
 
     /**

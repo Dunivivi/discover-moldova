@@ -1,11 +1,14 @@
 package com.travel.moldova.service;
 
+import com.travel.moldova.domain.Assets;
 import com.travel.moldova.domain.Events;
 import com.travel.moldova.domain.User;
 import com.travel.moldova.domain.enumeration.Type;
+import com.travel.moldova.repository.AssetsRepository;
 import com.travel.moldova.repository.EventsRepository;
 import com.travel.moldova.repository.UserRepository;
 import com.travel.moldova.security.SecurityUtils;
+import com.travel.moldova.service.dto.CreateEventDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,8 +16,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Service Implementation for managing {@link Events}.
@@ -29,10 +35,13 @@ public class EventsService {
 
     private final UserRepository userRepository;
 
+    private final AssetsRepository assetsRepository;
 
-    public EventsService(EventsRepository eventsRepository, UserRepository userRepository) {
+
+    public EventsService(EventsRepository eventsRepository, UserRepository userRepository, AssetsRepository assetsRepository) {
         this.eventsRepository = eventsRepository;
         this.userRepository = userRepository;
+        this.assetsRepository = assetsRepository;
     }
 
     /**
@@ -120,6 +129,42 @@ public class EventsService {
 
         event.getUsers().remove(user);
         eventsRepository.save(event);
+    }
+
+    @Transactional()
+    public void createEvent(CreateEventDTO eventDTO) {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+
+        Events event = new Events();
+        event.setTitle(eventDTO.getTitle());
+        event.setDescription(eventDTO.getDescription());
+        event.setRating(nonNull(eventDTO.getRating()) ? eventDTO.getRating() : 0);
+        event.setNoOfTours(nonNull(eventDTO.getNoOfTours()) ? eventDTO.getNoOfTours() : 0);
+        event.setPreViewImg(nonNull(eventDTO.getPreViewImg()) ? eventDTO.getPreViewImg() : null);
+        event.setType(nonNull(eventDTO.getType()) ? eventDTO.getType() : null);
+        event.setSubType(nonNull(eventDTO.getSubType()) ? eventDTO.getSubType() : null);
+        event.setEventDate(nonNull(eventDTO.getEventDate()) ? eventDTO.getEventDate() : null);
+        event.setLat(nonNull(eventDTO.getLat()) ? eventDTO.getLat() : null);
+        event.setLongitudine(nonNull(eventDTO.getLongitudine()) ? eventDTO.getLongitudine() : null);
+        event.setUrl(nonNull(eventDTO.getUrl()) ? eventDTO.getUrl() : null);
+        event.setLocation(nonNull(eventDTO.getLocation()) ? eventDTO.getLocation() : null);
+        event.setAssets(nonNull(eventDTO.getAssets()) ? eventDTO.getAssets() : null);
+        event.setCompanyId(nonNull(user.getCompany().getId()) ? user.getCompany().getId() : null);
+        event.setCreatedBy(user.getFirstName() + " " + user.getLastName());
+        event.setCreatedDate(Instant.now());
+
+        Events events = eventsRepository.save(event);
+
+        if (!eventDTO.getAssets().isEmpty()) {
+            for (Assets asset : eventDTO.getAssets()) {
+                Assets assets = new Assets();
+                assets.setUrl(asset.getUrl());
+                assets.setEvents(events);
+
+                assetsRepository.save(assets);
+            }
+        }
     }
 
 
