@@ -62,7 +62,7 @@ public class EventsResource {
         log.debug("REST request to save Events : {}", eventDTO);
         eventsService.createEvent(eventDTO);
         return ResponseEntity
-            .created(new URI("/api/events/" + eventDTO.getTitle()))
+            .created(new URI("/api/events/" + eventDTO.getType()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, eventDTO.getTitle()))
             .body(HttpStatus.CREATED);
     }
