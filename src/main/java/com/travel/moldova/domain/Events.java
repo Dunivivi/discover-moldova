@@ -90,7 +90,7 @@ public class Events implements Serializable {
     @Column(name = "company_id")
     private Long companyId;
 
-    @OneToMany(mappedBy = "events", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "events", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = {"events"})
     private Set<Assets> assets = new HashSet<>();
 

@@ -174,6 +174,8 @@ public class EventsService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Events : {}", id);
+        Optional<Events> events = eventsRepository.findById(id);
+        events.ifPresent(value -> value.getUsers().clear());
         eventsRepository.deleteById(id);
     }
 }
