@@ -116,51 +116,9 @@ public class EventsQueryService extends QueryService<Events> {
             if (criteria.getDistinct() != null) {
                 specification = specification.and(distinct(criteria.getDistinct()));
             }
-//            if (criteria.getId() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getId(), Events_.id));
-//            }
-//            if (criteria.getTitle() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getTitle(), Events_.title));
-//            }
-//            if (criteria.getNoOfTours() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getNoOfTours(), Events_.noOfTours));
-//            }
-//            if (criteria.getRating() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getRating(), Events_.rating));
-//            }
-//            if (criteria.getPreViewImg() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getPreViewImg(), Events_.preViewImg));
-//            }
-//            if (criteria.getDescription() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getDescription(), Events_.description));
-//            }
             if (criteria.getType() != null && !Objects.equals(criteria.getType(), new EventsCriteria.TypeFilter().setEquals(Type.Toate))) {
                 specification = specification.and(buildSpecification(criteria.getType(), Events_.type));
             }
-//            if (criteria.getSubType() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getSubType(), Events_.subType));
-//            }
-//            if (criteria.getPrice() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getPrice(), Events_.price));
-//            }
-//            if (criteria.getEventDate() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getEventDate(), Events_.eventDate));
-//            }
-//            if (criteria.getCreatedBy() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getCreatedBy(), Events_.createdBy));
-//            }
-//            if (criteria.getCreatedDate() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getCreatedDate(), Events_.createdDate));
-//            }
-//            if (criteria.getLastModifiedBy() != null) {
-//                specification = specification.and(buildStringSpecification(criteria.getLastModifiedBy(), Events_.lastModifiedBy));
-//            }
-//            if (criteria.getLastModifiedDate() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Events_.lastModifiedDate));
-//            }
-//            if (criteria.getCompanyId() != null) {
-//                specification = specification.and(buildRangeSpecification(criteria.getCompanyId(), Events_.companyId));
-//            }
         }
         return specification;
     }
